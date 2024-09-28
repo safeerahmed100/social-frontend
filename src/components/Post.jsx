@@ -2,26 +2,12 @@ import React from 'react'
 import Comment from './Comment'
 function Post() {
   return (
-        <div className='post-container py-5 px-3 border shadow rounded'>
-        <div className="row">
-            <div className="col">
-                <form className='col'>
-                  <div className="form-group">
-                <input type='text' placeholder="What's on your Mind" className='form-control'/>
-                </div>
-                <div className="form-group">
-                <input type='file' name='image' className=' form-control'/>
-                </div>
-                <button className='btn btn-primary mt-3' type='submit'>Post</button>
-                
-                
-                </form>
-
-            </div>
-        </div>
-       
-
-        </div>
+    <div className="card mb-3">
+    <div className="card-body">
+        <textarea className="form-control" rows="3" placeholder="What's on your mind?" />
+        <button className="btn btn-primary mt-2">Post</button>
+    </div>
+</div>
   )
 }
 

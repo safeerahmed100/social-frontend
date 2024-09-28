@@ -1,54 +1,55 @@
 import {React,useState} from 'react'
 import { useNavigate } from 'react-router-dom'; 
+import api, { setAuthToken } from '../api';
+import axios from 'axios';
 
 
-export default function Login() {
-    const [email,setEmail]=useState('')
-    const [password,setPassword]= useState('')
-    const [message,setMessage]=useState('');
-    
+export default function  Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [isPending, setIsPending] = useState(false);
+
     const navigate = useNavigate();
-    
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      console.log(email, password);
-      const credentials = { email, password };
-      setIsPending(true);
-  
-      try {
-          const response = await fetch('http://localhost:8000/api/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-              },
-              body: JSON.stringify(credentials),
-          });
-  
-          // Check if response is OK and then parse the JSON
-          if (response.ok) {
 
-              const data = await response.json();
-              setMessage(data.message);
-              console.log(data.access_token);
-              if (data.access_token) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const credentials = { email, password };
+        setIsPending(true);
+
+        try {
+            const response = await api.post('/login', credentials, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            });
+
+            if (response.status === 200) {
+                const data = response.data;
+                setMessage(data.message);
                 
-                  navigate('/dashboard');
-              } else {
-                  console.log("wrong credentials");
-              }
-          } else {
-              const errorData = await response.json(); // Fetch error response
-              setMessage(errorData.message || 'Login failed');
-              console.log(errorData);
-          }
-      } catch (error) {
-          console.error('Error:', error);
-          setMessage('An error occurred. Please try again.');
-      }
-      setIsPending(false)
-  };
+                if (data.access_token) {
+                    localStorage.setItem('token', data.access_token);
+                    setAuthToken(data.access_token); // Set the token for future requests
+                    navigate('/dashboard');
+                } else {
+                    console.log("Wrong credentials");
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (error.response) {
+                setMessage(error.response.data.message || 'Login failed');
+            } else {
+                setMessage('An error occurred. Please try again.');
+            }
+        } finally {
+            setIsPending(false);
+        }
+    };
+
+
   
   return (
 
@@ -56,7 +57,7 @@ export default function Login() {
     <div className='form-container'>
         {message && (
         <div className="alert my-2 alert-danger" role="alert">
-           <p class='container'> {message}</p>
+           <p className='container'> {message}</p>
      </div>
         )}
     
