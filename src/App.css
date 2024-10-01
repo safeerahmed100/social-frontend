@@ -5,3 +5,21 @@ img.profile_image {
   border-radius: 100px;
 
 }
+.header img.profile_image{
+  position: relative;
+  cursor: pointer;
+}
+
+.header .menus {
+  position: absolute;
+  top: 100%;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  left: 81%;
+}
+
+

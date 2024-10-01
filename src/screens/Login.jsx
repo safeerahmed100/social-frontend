@@ -1,7 +1,6 @@
 import {React,useState} from 'react'
-import { useNavigate } from 'react-router-dom'; 
+import { NavLink, useNavigate } from 'react-router-dom'; 
 import api, { setAuthToken } from '../api';
-import axios from 'axios';
 
 
 export default function  Login() {
@@ -32,7 +31,7 @@ export default function  Login() {
                 if (data.access_token) {
                     localStorage.setItem('token', data.access_token);
                     setAuthToken(data.access_token); // Set the token for future requests
-                    navigate('/dashboard');
+                    navigate('/home');
                 } else {
                     console.log("Wrong credentials");
                 }
@@ -85,7 +84,7 @@ export default function  Login() {
     </form>
     <hr/>
     
-      <a href='/register' className='btn btn-primary w-100'>Register</a>
+      <NavLink to='/register'  className='btn btn-primary w-100'>Register</NavLink>
     
     </div>
     </div>

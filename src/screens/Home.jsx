@@ -49,7 +49,7 @@ function Home() {
         <Post  />
      
       {posts.map(post=>(
-        <PostCard key={post.id} post={post}/>
+        <PostCard key={post.id} post={post} />
       ))}
 
     </div>
